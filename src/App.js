@@ -12,7 +12,7 @@ import { useState } from "react";
 
 function App() {
   // 신발들을 저장하는 state 생성
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
 
   const navigate = useNavigate();
 
@@ -55,7 +55,12 @@ function App() {
       </Navbar>
       {/* <Link to="/detail">상세 페이지</Link> */}
       <Routes>
-        <Route path="/" element={<Home shoes={shoes} navigate={navigate} />} />
+        <Route
+          path="/"
+          element={
+            <Home shoes={shoes} setShoes={setShoes} navigate={navigate} />
+          }
+        />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>사원 정보</div>} />

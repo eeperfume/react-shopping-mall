@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import Nav from "react-bootstrap/Nav";
 
 // class Detail extends React.Component {
 //   componentDidMount() {
@@ -97,39 +98,115 @@ const Detail = ({ shoes }) => {
     isNumberOnly();
   }, [number]);
 
+  // 탭 번호를 저장하기 위한 state 생성
+  let [tabNumber, setTabNumber] = useState(0);
+
+  let [pageFadeIn, setPageFadeIn] = useState("");
+
+  useEffect(() => {
+    let timeoutId = setTimeout(() => {
+      setPageFadeIn("end");
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      setPageFadeIn("");
+    };
+  }, []);
+
   return (
-    <Container>
-      {alert ? (
-        <div className="alert alert-warning" id="discount">
-          1초 이내 구매 시 할인
-        </div>
-      ) : null}
-      <Row>
-        <Col>
-          <img
-            src={require("./../images/shoes" + shoe.id + ".png")}
-            width="100%"
-            alt=""
-          ></img>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {numberAlert ? (
-            <div className="alert alert-danger">경고: 숫자만 입력하세요</div>
-          ) : null}
-          <input
-            onChange={(e) => {
-              setNumber(e.target.value);
+    <div className={`start ${pageFadeIn}`}>
+      <Container>
+        {alert ? (
+          <div className="alert alert-warning" id="discount">
+            1초 이내 구매 시 할인
+          </div>
+        ) : null}
+        <Row>
+          <Col>
+            <img
+              src={require("./../images/shoes" + shoe.id + ".png")}
+              width="100%"
+              alt=""
+            ></img>
+          </Col>
+          <Col>
+            {numberAlert ? (
+              <div className="alert alert-danger">경고: 숫자만 입력하세요</div>
+            ) : null}
+            <input
+              onChange={(e) => {
+                setNumber(e.target.value);
+              }}
+            ></input>
+            <h4>{shoe.title}</h4>
+            <p>{shoe.content}</p>
+            <p>{shoe.price}</p>
+            <Button variant="danger">Danger</Button>{" "}
+          </Col>
+        </Row>
+      </Container>
+      <Nav variant="tabs" defaultActiveKey="link0">
+        <Nav.Item>
+          <Nav.Link
+            onClick={() => {
+              setTabNumber(0);
             }}
-          ></input>
-          <h4>{shoe.title}</h4>
-          <p>{shoe.content}</p>
-          <p>{shoe.price}</p>
-          <Button variant="danger">Danger</Button>{" "}
-        </Col>
-      </Row>
-    </Container>
+            eventKey="link0"
+          >
+            버튼0
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            onClick={() => {
+              setTabNumber(1);
+            }}
+            eventKey="link1"
+          >
+            버튼1
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            onClick={() => {
+              setTabNumber(2);
+            }}
+            eventKey="link2"
+          >
+            버튼2
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <HandleTabContent tabNumber={tabNumber} shoe={shoe} />
+    </div>
+  );
+};
+
+const HandleTabContent = ({ tabNumber, shoe }) => {
+  let [fadeIn, setFadeIn] = useState("");
+
+  useEffect(() => {
+    let timeoutId = setTimeout(() => {
+      setFadeIn("end");
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      setFadeIn("");
+    };
+  }, [tabNumber]);
+
+  return (
+    <div className={`start ${fadeIn}`}>
+      {
+        [
+          <div>{shoe.title}</div>,
+          <div>{shoe.content}</div>,
+          <div>{shoe.price}</div>,
+        ][tabNumber]
+      }
+    </div>
   );
 };
 
