@@ -4,9 +4,10 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
-import Home from "./pages/home";
-import Detail from "./pages/detail";
-import About from "./pages/about";
+import Home from "./pages/Home";
+import Detail from "./pages/Detail";
+import About from "./pages/About";
+import Cart from "./pages/Cart";
 import data from "./data";
 import { useState } from "react";
 
@@ -50,6 +51,13 @@ function App() {
             >
               Event
             </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/cart");
+              }}
+            >
+              Cart
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -78,6 +86,7 @@ function App() {
           <Route path="one" element={<div>첫 주문 시 양배추즙 서비스</div>} />
           <Route path="two" element={<div>생일 기념 쿠폰 받기</div>} />
         </Route>
+        <Route path="/cart" element={<Cart />} />
         <Route path="/*" element={<div>404 Page</div>} />
       </Routes>
     </div>

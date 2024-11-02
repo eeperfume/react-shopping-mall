@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -5,6 +6,8 @@ import Button from "react-bootstrap/Button";
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Nav from "react-bootstrap/Nav";
+import { useDispatch } from "react-redux";
+import { addItem } from "../features/cartSlice";
 
 // class Detail extends React.Component {
 //   componentDidMount() {
@@ -81,21 +84,17 @@ const Detail = ({ shoes }) => {
   // 숫자만 입력됐는지 확인하기 위한 state 생성
   let [number, setNumber] = useState("");
 
-  // 숫자만 입력됐는지 확인하는 함수
-  const isNumberOnly = () => {
-    const regex = /^[0-9]+$/;
-    if (!number) {
-      return setNumberAlert(false);
-    }
-    regex.test(number) ? setNumberAlert(false) : setNumberAlert(true);
-  };
-
   // 할인 패널을 숨겨주기 위한 state 생성
   let [numberAlert, setNumberAlert] = useState(false);
 
   // number state 변경 시 실행
   useEffect(() => {
-    isNumberOnly();
+    // 숫자만 입력됐는지 확인
+    const regex = /^[0-9]+$/;
+    if (!number) {
+      return setNumberAlert(false);
+    }
+    regex.test(number) ? setNumberAlert(false) : setNumberAlert(true);
   }, [number]);
 
   // 탭 번호를 저장하기 위한 state 생성
@@ -113,6 +112,9 @@ const Detail = ({ shoes }) => {
       setPageFadeIn("");
     };
   }, []);
+
+  // dispatch Hook 사용
+  const dispatch = useDispatch();
 
   return (
     <div className={`start ${pageFadeIn}`}>
@@ -142,7 +144,20 @@ const Detail = ({ shoes }) => {
             <h4>{shoe.title}</h4>
             <p>{shoe.content}</p>
             <p>{shoe.price}</p>
-            <Button variant="danger">Danger</Button>{" "}
+            <Button
+              variant="danger"
+              onClick={() => {
+                dispatch(
+                  addItem({
+                    id: shoe.id,
+                    name: shoe.title,
+                    count: 1,
+                  })
+                );
+              }}
+            >
+              Danger
+            </Button>{" "}
           </Col>
         </Row>
       </Container>
