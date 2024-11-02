@@ -28,6 +28,16 @@ const Detail = ({ shoes }) => {
   // 신발 데이터를 가져올 때 URL에서 가져온 ID 파라미터를 토대로 실제 데이터가 존재하면 해당 데이터를 찾아서 반환하는 변수 생성
   const shoe = shoes.find((shoe) => shoe.id == id);
 
+  // localStorage에 최근 본 상품 저장
+  useEffect(() => {
+    let watched = localStorage.getItem("watched");
+    watched = JSON.parse(watched);
+    watched.push(shoe.id);
+    watched = new Set(watched);
+    watched = Array.from(watched);
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, []);
+
   // 할인 패널을 숨겨주기 위한 state 생성
   let [alert, setAlert] = useState(true);
 
